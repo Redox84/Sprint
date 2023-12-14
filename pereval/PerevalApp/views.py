@@ -1,5 +1,3 @@
-
-import django_filters.rest_framework
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
@@ -7,7 +5,7 @@ from .serializers import *
 from .models import *
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class MoUserViewSet(viewsets.ModelViewSet):
     queryset = MoUser.objects.all()
     serializer_class = MoUserSerializer
     filterset_fields = ['fam', 'name', 'otc', 'email']
@@ -19,7 +17,7 @@ class CoordsViewSet(viewsets.ModelViewSet):
 
 
 class LevelViewSet(viewsets.ModelViewSet):
-    queryset = Coords.objects.all()
+    queryset = Level.objects.all()
     serializer_class = LevelSerializer
 
 
@@ -31,7 +29,6 @@ class ImagesViewSet(viewsets.ModelViewSet):
 class MountpassViewSet(viewsets.ModelViewSet):
     queryset = Mountpass.objects.all()
     serializer_class = MountpassSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
 
     # Создаем перевал
     def create(self, request, *args, **kwargs):
@@ -45,6 +42,7 @@ class MountpassViewSet(viewsets.ModelViewSet):
                     'id': serializer.data['id'],
                 }
             )
+
         if status.HTTP_400_BAD_REQUEST:
             return Response(
                 {
@@ -53,6 +51,7 @@ class MountpassViewSet(viewsets.ModelViewSet):
                     'id': None,
                 }
             )
+
         if status.HTTP_500_INTERNAL_SERVER_ERROR:
             return Response(
                 {

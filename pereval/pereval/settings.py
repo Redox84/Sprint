@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django_filters',
     'PerevalApp',
     'rest_framework',
-    #'drf_spectacular',
 
 ]
 
@@ -150,22 +149,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend'
-    ],
-}
-
-# SPECTACULAR_SETTINGS = {
-#     "TITLE": "MP List API",  # название проекта
-#     "DESCRIPTION": 'API documentation for application PASS_APP',
-#     "VERSION": "0.0.1",  # версия проекта
-#     "SERVE_INCLUDE_SCHEMA": True,  # исключить эндпоинт /schema
-#     "SWAGGER_UI_SETTINGS": {
-#         "filter": True,  # включить поиск по тегам
-#     },
-#     "COMPONENT_SPLIT_REQUEST": True
-# }
 

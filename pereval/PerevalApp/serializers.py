@@ -8,7 +8,6 @@ class MoUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoUser
         fields = [
-            'name',
             'email',
             'phone',
             'fam',
@@ -56,8 +55,9 @@ class ImagesSerializer(serializers.ModelSerializer):
 
 
 class MountpassSerializer(WritableNestedModelSerializer):
+    add_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     user = MoUserSerializer()
-    coords = CoordsSerializer()
+    coord = CoordsSerializer()
     level = LevelSerializer(allow_null=True)
     images = ImagesSerializer(many=True)
 
@@ -71,7 +71,7 @@ class MountpassSerializer(WritableNestedModelSerializer):
             'connect',
             'add_time',
             'user',
-            'coords',
+            'coord',
             'level',
             'images',
             'status',

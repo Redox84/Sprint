@@ -52,13 +52,11 @@ def get_path_upload_images(instance, file):
 
 
 class Images(models.Model):  # фото местности
-    mount = models.ForeignKey(Mountpass, on_delete=models.CASCADE,
-                                      related_name='images', null=True, blank=True)
+    mount = models.ForeignKey(Mountpass, on_delete=models.CASCADE, related_name='images', null=True, blank=True)
     image = models.ImageField(upload_to=get_path_upload_images, blank=True, null=True, verbose_name='Изображение')
     title = models.CharField(max_length=255, null=True, blank=True, verbose_name='Название')
 
     def __str__(self):
         return f'{self.mount}'
-
 
 
