@@ -3,8 +3,8 @@ from .choices import LEVELS_CHOICES, STATUS_CHOICES
 
 
 class MoUser(models.Model):  # пользователи
-    email = models.CharField(max_length=100, unique=True, verbose_name='почта')
-    phone = models.IntegerField(unique=True, verbose_name='Телефон')
+    email = models.CharField(max_length=100, verbose_name='почта')
+    phone = models.IntegerField(verbose_name='Телефон')
     fam = models.CharField(max_length=100, verbose_name='Фамилия')
     name = models.CharField(max_length=100, verbose_name='Имя')
     otc = models.CharField(max_length=100, verbose_name='Отчество', blank=True, null=True)

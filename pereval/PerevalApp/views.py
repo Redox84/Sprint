@@ -1,9 +1,6 @@
 import django_filters
-from django.http import JsonResponse
-from rest_framework import viewsets, status, generics
-from rest_framework.decorators import api_view
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-
 from .serializers import *
 from .models import *
 
@@ -35,7 +32,7 @@ class MountpassViewSet(viewsets.ModelViewSet):
     # Список данных обо всех объектах, которые пользователь с почтой <email> отправил на сервер.
     # Вывод данных по ид
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ('user__email',)
+    filterset_fields = ('user__email', 'id')
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
