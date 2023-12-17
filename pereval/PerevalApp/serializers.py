@@ -16,6 +16,21 @@ class MoUserSerializer(serializers.ModelSerializer):
         ]
         verbose_name = 'Турист'
 
+    def save(self, **kwargs):
+        self.is_valid()
+        user = MoUser.objects.filter(email=self.validated_data.get('email'))
+        if user.exists():
+            return user.first()
+        else:
+            new_user = MoUser.objects.create(
+                email=self.validated_data.get('email'),
+                phone=self.validated_data.get('phone'),
+                fam=self.validated_data.get('fam'),
+                name=self.validated_data.get('name'),
+                otc=self.validated_data.get('otc'),
+            )
+            return new_user
+
 
 class CoordsSerializer(serializers.ModelSerializer):
 
@@ -78,7 +93,21 @@ class MountpassSerializer(WritableNestedModelSerializer):
         ]
         read_only_fields = ['status']
 
+    # Запрет изменять данные пользователя при редактировании данных о перевале
 
+    def validate(self, value):
+
+        user_data = value['user']
+
+        if self.instance:
+            if (user_data['email'] != self.instance.user.email or
+                    user_data['fam'] != self.instance.user.fam or
+                    user_data['name'] != self.instance.user.name or
+                    user_data['otc'] != self.instance.user.otc or
+                    user_data['phone'] != self.instance.user.phone):
+                raise serializers.ValidationError()
+
+        return value
 
 
 

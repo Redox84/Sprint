@@ -33,7 +33,7 @@ class Level(models.Model):  # уровень сложность
 
 
 class Mountpass(models.Model):  # Перевал
-    beautyTitle = models.CharField(default='пер.', max_length=255, verbose_name='красивое название')
+    beautyTitle = models.CharField(default='пер.', max_length=255, verbose_name='краткое название')
     title = models.CharField(blank=True, null=True, max_length=255, verbose_name='название')
     other_titles = models.CharField(blank=True, null=True, max_length=255, verbose_name='Другое название')
     connect = models.CharField(max_length=255, blank=True, null=True, verbose_name='Что связывает')

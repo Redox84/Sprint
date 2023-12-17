@@ -1,4 +1,7 @@
-from rest_framework import viewsets, status
+import django_filters
+from django.http import JsonResponse
+from rest_framework import viewsets, status, generics
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .serializers import *
@@ -29,6 +32,13 @@ class ImagesViewSet(viewsets.ModelViewSet):
 class MountpassViewSet(viewsets.ModelViewSet):
     queryset = Mountpass.objects.all()
     serializer_class = MountpassSerializer
+    # Список данных обо всех объектах, которые пользователь с почтой <email> отправил на сервер.
+    # Вывод данных по ид
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ('user__email',)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
     # Создаем перевал
     def create(self, request, *args, **kwargs):
@@ -42,7 +52,6 @@ class MountpassViewSet(viewsets.ModelViewSet):
                     'id': serializer.data['id'],
                 }
             )
-
         if status.HTTP_400_BAD_REQUEST:
             return Response(
                 {
@@ -51,7 +60,6 @@ class MountpassViewSet(viewsets.ModelViewSet):
                     'id': None,
                 }
             )
-
         if status.HTTP_500_INTERNAL_SERVER_ERROR:
             return Response(
                 {
@@ -61,3 +69,30 @@ class MountpassViewSet(viewsets.ModelViewSet):
                 }
             )
 
+    # Возможность частичного редактирования данных о перевале (при статусе "new")
+    def update(self, request, *args, **kwargs):
+        mount = self.get_object()
+        if mount.status == 'NW':
+            serializer = MountpassSerializer(mount, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {
+                        'state': '1',
+                        'message': 'Изменения в записи внесены'
+                    }
+                )
+            else:
+                return Response(
+                    {
+                        'state': '0',
+                        'message': serializer.errors
+                    }
+                )
+        else:
+            return Response(
+                {
+                    'state': '0',
+                    'message': f'Текущий статус: {mount.get_status_display()}, изменить запись нельзя!'
+                }
+            )
