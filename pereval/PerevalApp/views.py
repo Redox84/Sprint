@@ -29,10 +29,10 @@ class ImagesViewSet(viewsets.ModelViewSet):
 class MountpassViewSet(viewsets.ModelViewSet):
     queryset = Mountpass.objects.all()
     serializer_class = MountpassSerializer
+
     # Список данных обо всех объектах, которые пользователь с почтой <email> отправил на сервер.
-    # Вывод данных по ид
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ('user__email', 'id')
+    filterset_fields = ('user__email',)
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)

@@ -1,4 +1,3 @@
-from drf_writable_nested import WritableNestedModelSerializer
 from .models import *
 from rest_framework import serializers
 
@@ -69,12 +68,13 @@ class ImagesSerializer(serializers.ModelSerializer):
         verbose_name = 'Фото'
 
 
-class MountpassSerializer(WritableNestedModelSerializer):
+class MountpassSerializer(serializers.HyperlinkedModelSerializer):
     add_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     user = MoUserSerializer()
     coord = CoordsSerializer()
     level = LevelSerializer(allow_null=True)
     images = ImagesSerializer(many=True)
+    id = serializers.HyperlinkedIdentityField(view_name='mountpass-detail')  # Вывод данных по ид
 
     class Meta:
         model = Mountpass
