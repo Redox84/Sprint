@@ -39,7 +39,7 @@ class MountpassViewSet(viewsets.ModelViewSet):
 
     # Создаем перевал
     def create(self, request, *args, **kwargs):
-        serializer = MountpassSerializer(data=request.data)
+        serializer = MountpassSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(

@@ -1,0 +1,287 @@
+swagger: '2.0'
+info:
+  title: Snippets API
+  description: Test description
+  termsOfService: https://www.google.com/policies/terms/
+  contact:
+    email: contact@snippets.local
+  license:
+    name: BSD License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+- http
+basePath: /
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /mount/:
+    get:
+      operationId: mount_list
+      description: ''
+      parameters:
+      - name: user__email
+        in: query
+        description: user__email
+        required: false
+        type: string
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Mountpass'
+      tags:
+      - mount
+    post:
+      operationId: mount_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Mountpass'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Mountpass'
+      tags:
+      - mount
+    parameters: []
+  /mount/{id}/:
+    get:
+      operationId: mount_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Mountpass'
+      tags:
+      - mount
+    put:
+      operationId: mount_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Mountpass'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Mountpass'
+      tags:
+      - mount
+    patch:
+      operationId: mount_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Mountpass'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Mountpass'
+      tags:
+      - mount
+    delete:
+      operationId: mount_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - mount
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this mountpass.
+      required: true
+      type: integer
+definitions:
+  MoUser:
+    required:
+    - email
+    - phone
+    - fam
+    - name
+    type: object
+    properties:
+      email:
+        title: Почта
+        type: string
+        maxLength: 100
+        minLength: 1
+      phone:
+        title: Телефон
+        type: integer
+      fam:
+        title: Фамилия
+        type: string
+        maxLength: 100
+        minLength: 1
+      name:
+        title: Имя
+        type: string
+        maxLength: 100
+        minLength: 1
+      otc:
+        title: Отчество
+        type: string
+        maxLength: 100
+        x-nullable: true
+  Coords:
+    required:
+    - latitude
+    - longitude
+    - height
+    type: object
+    properties:
+      latitude:
+        title: Широта
+        type: number
+      longitude:
+        title: Долгота
+        type: number
+      height:
+        title: Высота
+        type: integer
+  Level:
+    type: object
+    properties:
+      winter:
+        title: Зима
+        type: string
+        enum:
+        - 1a
+        - 1b
+        - 2a
+        - 2b
+        - 3a
+        - 3b
+        x-nullable: true
+      summer:
+        title: Лето
+        type: string
+        enum:
+        - 1a
+        - 1b
+        - 2a
+        - 2b
+        - 3a
+        - 3b
+        x-nullable: true
+      autumn:
+        title: Осень
+        type: string
+        enum:
+        - 1a
+        - 1b
+        - 2a
+        - 2b
+        - 3a
+        - 3b
+        x-nullable: true
+      spring:
+        title: Весна
+        type: string
+        enum:
+        - 1a
+        - 1b
+        - 2a
+        - 2b
+        - 3a
+        - 3b
+        x-nullable: true
+    x-nullable: true
+  Images:
+    required:
+    - image
+    type: object
+    properties:
+      image:
+        title: Image
+        type: string
+        format: uri
+        minLength: 1
+      title:
+        title: Название
+        type: string
+        maxLength: 255
+        x-nullable: true
+  Mountpass:
+    required:
+    - user
+    - coord
+    - level
+    - images
+    type: object
+    properties:
+      id:
+        title: Id
+        type: string
+        format: uri
+        readOnly: true
+      beautyTitle:
+        title: Краткое название
+        type: string
+        maxLength: 255
+        minLength: 1
+      title:
+        title: Название
+        type: string
+        maxLength: 255
+        x-nullable: true
+      other_titles:
+        title: Другое название
+        type: string
+        maxLength: 255
+        x-nullable: true
+      connect:
+        title: Что связывает
+        type: string
+        maxLength: 255
+        x-nullable: true
+      add_time:
+        title: Add time
+        type: string
+        format: date-time
+        readOnly: true
+      user:
+        $ref: '#/definitions/MoUser'
+      coord:
+        $ref: '#/definitions/Coords'
+      level:
+        $ref: '#/definitions/Level'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Images'
+      status:
+        title: Статус
+        type: string
+        enum:
+        - NW
+        - AC
+        - PN
+        - RJ
+        readOnly: true

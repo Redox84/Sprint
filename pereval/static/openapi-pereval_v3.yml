@@ -1,0 +1,306 @@
+openapi: 3.0.2
+info:
+  title: Pereval
+  version: '0.1'
+  description: API
+paths:
+  /mount/:
+    get:
+      operationId: listMountpass
+      description: ''
+      parameters:
+      - name: user__email
+        required: false
+        in: query
+        description: user__email
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Mountpass'
+          description: ''
+      tags:
+      - mount
+    post:
+      operationId: createMountpass
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mountpass'
+          description: ''
+      tags:
+      - mount
+  /mount/{id}/:
+    get:
+      operationId: retrieveMountpass
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mountpass.
+        schema:
+          type: string
+      - name: user__email
+        required: false
+        in: query
+        description: user__email
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mountpass'
+          description: ''
+      tags:
+      - mount
+    put:
+      operationId: updateMountpass
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mountpass.
+        schema:
+          type: string
+      - name: user__email
+        required: false
+        in: query
+        description: user__email
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mountpass'
+          description: ''
+      tags:
+      - mount
+    patch:
+      operationId: partialUpdateMountpass
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mountpass.
+        schema:
+          type: string
+      - name: user__email
+        required: false
+        in: query
+        description: user__email
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Mountpass'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mountpass'
+          description: ''
+      tags:
+      - mount
+    delete:
+      operationId: destroyMountpass
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this mountpass.
+        schema:
+          type: string
+      - name: user__email
+        required: false
+        in: query
+        description: user__email
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - mount
+components:
+  schemas:
+    Mountpass:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        beautyTitle:
+          type: string
+          maxLength: 255
+        title:
+          type: string
+          nullable: true
+          maxLength: 255
+        other_titles:
+          type: string
+          nullable: true
+          maxLength: 255
+        connect:
+          type: string
+          nullable: true
+          maxLength: 255
+        add_time:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: object
+          properties:
+            email:
+              type: string
+              maxLength: 100
+            phone:
+              type: integer
+            fam:
+              type: string
+              maxLength: 100
+            name:
+              type: string
+              maxLength: 100
+            otc:
+              type: string
+              nullable: true
+              maxLength: 100
+          required:
+          - email
+          - phone
+          - fam
+          - name
+        coord:
+          type: object
+          properties:
+            latitude:
+              type: number
+            longitude:
+              type: number
+            height:
+              type: integer
+          required:
+          - latitude
+          - longitude
+          - height
+        level:
+          type: object
+          properties:
+            winter:
+              enum:
+              - 1a
+              - 1b
+              - 2a
+              - 2b
+              - 3a
+              - 3b
+              type: string
+              nullable: true
+            summer:
+              enum:
+              - 1a
+              - 1b
+              - 2a
+              - 2b
+              - 3a
+              - 3b
+              type: string
+              nullable: true
+            autumn:
+              enum:
+              - 1a
+              - 1b
+              - 2a
+              - 2b
+              - 3a
+              - 3b
+              type: string
+              nullable: true
+            spring:
+              enum:
+              - 1a
+              - 1b
+              - 2a
+              - 2b
+              - 3a
+              - 3b
+              type: string
+              nullable: true
+          nullable: true
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              image:
+                type: string
+                format: uri
+                pattern:
+              title:
+                type: string
+                nullable: true
+                maxLength: 255
+            required:
+            - image
+        status:
+          enum:
+          - NW
+          - AC
+          - PN
+          - RJ
+          type: string
+          readOnly: true
+      required:
+      - user
+      - coord
+      - level
+      - images

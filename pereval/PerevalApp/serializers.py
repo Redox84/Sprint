@@ -1,3 +1,5 @@
+from drf_writable_nested import WritableNestedModelSerializer
+
 from .models import *
 from rest_framework import serializers
 
@@ -68,7 +70,7 @@ class ImagesSerializer(serializers.ModelSerializer):
         verbose_name = 'Фото'
 
 
-class MountpassSerializer(serializers.HyperlinkedModelSerializer):
+class MountpassSerializer(WritableNestedModelSerializer, serializers.HyperlinkedModelSerializer):
     add_time = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True)
     user = MoUserSerializer()
     coord = CoordsSerializer()
