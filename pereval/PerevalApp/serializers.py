@@ -1,5 +1,4 @@
 from drf_writable_nested import WritableNestedModelSerializer
-
 from .models import *
 from rest_framework import serializers
 
